@@ -31,6 +31,7 @@
             this.label_Login = new System.Windows.Forms.Label();
             this.label_Password = new System.Windows.Forms.Label();
             this.label_Biblio = new System.Windows.Forms.Label();
+            this.textBox_Login = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label_Login
@@ -60,11 +61,19 @@
             this.label_Biblio.TabIndex = 2;
             this.label_Biblio.Text = "Bibliothèque";
             // 
+            // textBox_Login
+            // 
+            this.textBox_Login.Location = new System.Drawing.Point(296, 73);
+            this.textBox_Login.Name = "textBox_Login";
+            this.textBox_Login.Size = new System.Drawing.Size(100, 20);
+            this.textBox_Login.TabIndex = 3;
+            // 
             // Connexion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(660, 393);
+            this.Controls.Add(this.textBox_Login);
             this.Controls.Add(this.label_Biblio);
             this.Controls.Add(this.label_Password);
             this.Controls.Add(this.label_Login);
@@ -80,5 +89,6 @@
         private System.Windows.Forms.Label label_Login;
         private System.Windows.Forms.Label label_Password;
         private System.Windows.Forms.Label label_Biblio;
+        private System.Windows.Forms.TextBox textBox_Login;
     }
 }

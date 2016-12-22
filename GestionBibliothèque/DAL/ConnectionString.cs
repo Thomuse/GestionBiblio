@@ -5,13 +5,13 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data;
 
 namespace DAL
 {
-   public static class Database
+    public static class ConnectionString
+
     {
-       private static SqlConnection _oDatabase = null;
+        private static SqlConnection _oDatabase = null;
 
         public static SqlConnection oDatabase
         {
@@ -21,12 +21,11 @@ namespace DAL
                 if (_oDatabase == null || _oDatabase.State != ConnectionState.Open)
                 {
                     _oDatabase = new SqlConnection();
-                    _oDatabase.ConnectionString = Connection.DefaultConnectionString;
+                    _oDatabase.ConnectionString = Connection._DefaultConnectionString;
 
                 }
                 return _oDatabase;
             }
         }
-    
     }
 }

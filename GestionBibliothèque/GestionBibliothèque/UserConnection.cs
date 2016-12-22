@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace GestionBibliothèque
 {
-    public partial class Form1 : Form
+    public partial class UserConnection : Form
     {
-        public Form1()
+        public UserConnection()
         {
             InitializeComponent();
         }

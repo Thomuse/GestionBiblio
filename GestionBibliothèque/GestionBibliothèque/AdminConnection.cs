@@ -16,10 +16,5 @@ namespace GestionBibliothèque
         {
             InitializeComponent();
         }
-
-        private void InitializeComponent()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

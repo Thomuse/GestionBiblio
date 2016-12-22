@@ -8,6 +8,6 @@ namespace DAL
 {
     public class Connection
     {
-        public string _Connection = "Data Source=MICHAEL;Initial Catalog=Bibliotheque;User ID=sa;Password=***********";
+        public string _Connection = "Data Source=MICHAEL;Initial Catalog=Bibliotheque;User ID=sa;Password=";
     }
 }

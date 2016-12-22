@@ -41,10 +41,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BiblioModel.cs" />
+    <Compile Include="ConnectionModel.cs" />
+    <Compile Include="EmpruntModel.cs" />
     <Compile Include="ExemplaireModel.cs" />
     <Compile Include="LecteurModel.cs" />
     <Compile Include="LivresModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReservationModel.cs" />
+    <Compile Include="TarifModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

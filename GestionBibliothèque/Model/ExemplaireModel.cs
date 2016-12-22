@@ -10,5 +10,8 @@ namespace Model
     {
         public int _IdExemplaire { get; set; }
         public string _CodeExemplaire { get; set; }
+        public bool _Emprunte { get; set; }
+        public DateTime _DateAchat { get; set; }
+
     }
 }

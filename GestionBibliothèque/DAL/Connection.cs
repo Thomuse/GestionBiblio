@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    public class Connection
+    public static class Connection
     {
         public string _Connection = "Data Source=MICHAEL;Initial Catalog=Bibliotheque;User ID=sa;Password=hhhh";
     }

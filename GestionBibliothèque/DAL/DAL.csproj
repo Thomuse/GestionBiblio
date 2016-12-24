@@ -43,6 +43,7 @@
     <Compile Include="Connection.cs" />
     <Compile Include="DataLecteur.cs" />
     <Compile Include="ConnectionString.cs" />
+    <Compile Include="DataAdmin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

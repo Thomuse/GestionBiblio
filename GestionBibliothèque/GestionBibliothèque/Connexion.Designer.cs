@@ -32,6 +32,10 @@
             this.label_Password = new System.Windows.Forms.Label();
             this.label_Biblio = new System.Windows.Forms.Label();
             this.textBox_Login = new System.Windows.Forms.TextBox();
+            this.textBox_Password = new System.Windows.Forms.TextBox();
+            this.comboBox_Biblio = new System.Windows.Forms.ComboBox();
+            this.button_TestAdmin = new System.Windows.Forms.Button();
+            this.button_Test_User = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label_Login
@@ -68,11 +72,50 @@
             this.textBox_Login.Size = new System.Drawing.Size(100, 20);
             this.textBox_Login.TabIndex = 3;
             // 
+            // textBox_Password
+            // 
+            this.textBox_Password.Location = new System.Drawing.Point(296, 122);
+            this.textBox_Password.Name = "textBox_Password";
+            this.textBox_Password.Size = new System.Drawing.Size(100, 20);
+            this.textBox_Password.TabIndex = 4;
+            // 
+            // comboBox_Biblio
+            // 
+            this.comboBox_Biblio.FormattingEnabled = true;
+            this.comboBox_Biblio.Location = new System.Drawing.Point(296, 159);
+            this.comboBox_Biblio.Name = "comboBox_Biblio";
+            this.comboBox_Biblio.Size = new System.Drawing.Size(100, 21);
+            this.comboBox_Biblio.TabIndex = 5;
+            // 
+            // button_TestAdmin
+            // 
+            this.button_TestAdmin.Location = new System.Drawing.Point(35, 75);
+            this.button_TestAdmin.Name = "button_TestAdmin";
+            this.button_TestAdmin.Size = new System.Drawing.Size(75, 23);
+            this.button_TestAdmin.TabIndex = 6;
+            this.button_TestAdmin.Text = "Test Admin";
+            this.button_TestAdmin.UseVisualStyleBackColor = true;
+            this.button_TestAdmin.Click += new System.EventHandler(this.button_TestAdmin_Click);
+            // 
+            // button_Test_User
+            // 
+            this.button_Test_User.Location = new System.Drawing.Point(513, 80);
+            this.button_Test_User.Name = "button_Test_User";
+            this.button_Test_User.Size = new System.Drawing.Size(75, 23);
+            this.button_Test_User.TabIndex = 7;
+            this.button_Test_User.Text = "Test User";
+            this.button_Test_User.UseVisualStyleBackColor = true;
+            this.button_Test_User.Click += new System.EventHandler(this.button_Test_User_Click);
+            // 
             // Connexion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(660, 393);
+            this.Controls.Add(this.button_Test_User);
+            this.Controls.Add(this.button_TestAdmin);
+            this.Controls.Add(this.comboBox_Biblio);
+            this.Controls.Add(this.textBox_Password);
             this.Controls.Add(this.textBox_Login);
             this.Controls.Add(this.label_Biblio);
             this.Controls.Add(this.label_Password);
@@ -90,5 +133,9 @@
         private System.Windows.Forms.Label label_Password;
         private System.Windows.Forms.Label label_Biblio;
         private System.Windows.Forms.TextBox textBox_Login;
+        private System.Windows.Forms.TextBox textBox_Password;
+        private System.Windows.Forms.ComboBox comboBox_Biblio;
+        private System.Windows.Forms.Button button_TestAdmin;
+        private System.Windows.Forms.Button button_Test_User;
     }
 }

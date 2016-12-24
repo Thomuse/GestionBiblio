@@ -36,6 +36,7 @@
             this.comboBox_Biblio = new System.Windows.Forms.ComboBox();
             this.button_TestAdmin = new System.Windows.Forms.Button();
             this.button_Test_User = new System.Windows.Forms.Button();
+            this.button_Charger_Nom_Biblio = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label_Login
@@ -86,6 +87,7 @@
             this.comboBox_Biblio.Name = "comboBox_Biblio";
             this.comboBox_Biblio.Size = new System.Drawing.Size(100, 21);
             this.comboBox_Biblio.TabIndex = 5;
+            this.comboBox_Biblio.SelectedIndexChanged += new System.EventHandler(this.comboBox_Biblio_SelectedIndexChanged);
             // 
             // button_TestAdmin
             // 
@@ -107,11 +109,22 @@
             this.button_Test_User.UseVisualStyleBackColor = true;
             this.button_Test_User.Click += new System.EventHandler(this.button_Test_User_Click);
             // 
+            // button_Charger_Nom_Biblio
+            // 
+            this.button_Charger_Nom_Biblio.Location = new System.Drawing.Point(45, 162);
+            this.button_Charger_Nom_Biblio.Name = "button_Charger_Nom_Biblio";
+            this.button_Charger_Nom_Biblio.Size = new System.Drawing.Size(75, 49);
+            this.button_Charger_Nom_Biblio.TabIndex = 8;
+            this.button_Charger_Nom_Biblio.Text = "Charger Nom Biblio";
+            this.button_Charger_Nom_Biblio.UseVisualStyleBackColor = true;
+            this.button_Charger_Nom_Biblio.Click += new System.EventHandler(this.button_Charger_Nom_Biblio_Click);
+            // 
             // Connexion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(660, 393);
+            this.Controls.Add(this.button_Charger_Nom_Biblio);
             this.Controls.Add(this.button_Test_User);
             this.Controls.Add(this.button_TestAdmin);
             this.Controls.Add(this.comboBox_Biblio);
@@ -137,5 +150,6 @@
         private System.Windows.Forms.ComboBox comboBox_Biblio;
         private System.Windows.Forms.Button button_TestAdmin;
         private System.Windows.Forms.Button button_Test_User;
+        private System.Windows.Forms.Button button_Charger_Nom_Biblio;
     }
 }

@@ -22,8 +22,21 @@ namespace BL
                 throw e;
             }
         }
-    }
-}
 
-       
+        public static void AjoutExemplaire(string p_CodeExemplaire,int p_Emprunte, int p_Id_Biblio, int p_Id_Livre)
+        {
+            string Code_Exemplaire = "";
+            int Emprunte = 0;
+            int Id_Biblio = 0;
+            int Id_Livre = 0;
+            Code_Exemplaire = p_CodeExemplaire;
+            Id_Biblio = p_Id_Biblio;
+            Id_Livre = p_Id_Livre;
+            DAL.DataAdmin.CreationExemplaire(ref p_CodeExemplaire,ref Emprunte ,ref p_Id_Biblio, ref p_Id_Livre);
+
+
+        }
+    }
+
+}    
 

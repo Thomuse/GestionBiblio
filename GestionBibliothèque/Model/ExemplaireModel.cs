@@ -12,6 +12,8 @@ namespace Model
         public string _CodeExemplaire { get; set; }
         public bool _Emprunte { get; set; }
         public DateTime _DateAchat { get; set; }
+        public int _Id_Biblio { get; set; }
+        public int _Id_Livre { get; set; }
 
     }
 }

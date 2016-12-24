@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,23 @@ namespace GestionBibliothèque
         {
             UserConnection ofrm = new UserConnection();
             ofrm.ShowDialog();
+        }
+
+        private void comboBox_Biblio_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //if (comboBox_Biblio.SelectedItem is Model.BiblioModel)
+            //{
+            //    Model.BiblioModel oNomBiblio = (Model.BiblioModel)comboBox_Biblio.SelectedItem;
+            //}
+
+
+
+
+        }
+        private void button_Charger_Nom_Biblio_Click(object sender, EventArgs e)
+        {
+            //Model.BiblioModel oNomBiblio = (Model.BiblioModel)comboBox_Biblio.SelectedItem;
+
         }
     }
 }

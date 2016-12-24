@@ -28,7 +28,7 @@ namespace DAL
                 oSqlAdapter.Fill(oDataSet, "Emprunts");
                 return oDataSet;
             }
-                
+
             catch (SqlException exSQL)
             {
                 int IdError = 999;
@@ -42,20 +42,74 @@ namespace DAL
                         break;
                 }
             }
-            
-                finally{
-                if (ConnectionString.oDatabase.State == ConnectionState.Open){
+
+            finally
+            {
+                if (ConnectionString.oDatabase.State == ConnectionState.Open)
+                {
                     ConnectionString.oDatabase.Close();
                 }
-                
-              
 
 
-           }
+
+
+            }
             return oDataSet;
+        }
+        public static void CreationExemplaire(ref string p_CodeExemplaire,ref int p_Emprunte,ref int p_Id_Biblio, ref int p_Id_Livre)
+        {
+            SqlCommand oInsert = new SqlCommand();
+
+            try
+            {
+                ConnectionString.oDatabase.Open();
+                oInsert.Connection = ConnectionString.oDatabase;
+                oInsert.CommandType = CommandType.StoredProcedure;
+                oInsert.CommandText = "Creation_Exemplaire";
+
+                SqlParameter oInsParamCodeExemplaire = new SqlParameter("@Code_Exemp", p_CodeExemplaire);
+                SqlParameter oInsParamEmprunte = new SqlParameter("@Emprunte", p_Emprunte);
+                SqlParameter oInsParamIdBiblio = new SqlParameter("@Id_Biblio ", p_Id_Biblio);
+                SqlParameter oInsParamIdLivre = new SqlParameter("@Id_Livre", p_Id_Livre);
+
+                if (p_CodeExemplaire != "" && p_Id_Biblio != 0 && p_Id_Livre != 0)
+                {
+
+                    oInsert.Parameters.Add(oInsParamCodeExemplaire);
+                    oInsert.Parameters.Add(oInsParamIdBiblio);
+                    oInsert.Parameters.Add(oInsParamIdLivre);
+                    oInsert.Parameters.Add(oInsParamEmprunte);
+                }
+
+
+                int RowsModified = oInsert.ExecuteNonQuery();
+            }
+            catch (SqlException SqlNumber)
+            {
+                int IdError = 999;
+                string sMessage;
+                switch (SqlNumber.Number)
+                {
+                    case 201:
+                        IdError = 1;
+                        break;
+                    case 2627:
+                        IdError = 2;
+                        break;
+                    default:
+                        sMessage = SqlNumber.Message + " -- " + SqlNumber.Number;
+                        break;
+                }
+
+            }
+            finally
+            {
+                if (ConnectionString.oDatabase.State == ConnectionState.Open)
+                {
+                    ConnectionString.oDatabase.Close();
+                }
             }
 
-      
+        }
     }
-    }
-
+}

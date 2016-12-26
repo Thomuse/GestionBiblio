@@ -15,10 +15,14 @@ namespace DAL
             BibliothequeEntities oDb = new BibliothequeEntities();
             
                 var oData = new DataSet();
+                var oSqlAdapter = new SqlDataAdapter();
+                var oCommand = new SqlCommand();
                 try
                 {
-
                     List<Liste_EmpruntsByID_Result> ListEmprunts = oDb.Liste_EmpruntsByID(p_Id).ToList();
+                    oSqlAdapter.SelectCommand = oCommand;
+                    oSqlAdapter.Fill(oData);
+                    //je résouds le problème ce soir ou demain, je sais que Fievez fait ça dans une de ses vidéos
                 }
 
                 catch (SqlException exSQL)

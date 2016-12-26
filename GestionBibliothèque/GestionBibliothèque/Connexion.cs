@@ -32,18 +32,12 @@ namespace GestionBibliothèque
 
         private void comboBox_Biblio_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //if (comboBox_Biblio.SelectedItem is Model.BiblioModel)
-            //{
-            //    Model.BiblioModel oNomBiblio = (Model.BiblioModel)comboBox_Biblio.SelectedItem;
-            //}
-
-
+            
 
 
         }
         private void button_Charger_Nom_Biblio_Click(object sender, EventArgs e)
         {
-            //Model.BiblioModel oNomBiblio = (Model.BiblioModel)comboBox_Biblio.SelectedItem;
 
         }
     }

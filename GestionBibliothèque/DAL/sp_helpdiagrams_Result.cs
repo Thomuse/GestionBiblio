@@ -10,14 +10,13 @@
 namespace DAL
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Connection
+    public partial class sp_helpdiagrams_Result
     {
-        public int ID_Con { get; set; }
-        public string Login { get; set; }
-        public string Mot_de_passe { get; set; }
-        public string Role { get; set; }
+        public string Database { get; set; }
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public string Owner { get; set; }
+        public int OwnerID { get; set; }
     }
-
 }

@@ -21,7 +21,7 @@ namespace DAL
                 if (_oDatabase == null || _oDatabase.State != ConnectionState.Open)
                 {
                     _oDatabase = new SqlConnection();
-                    _oDatabase.ConnectionString = Connection._DefaultConnectionString;
+                    _oDatabase.ConnectionString = Globals._DefaultConnectionString;
 
                 }
                 return _oDatabase;

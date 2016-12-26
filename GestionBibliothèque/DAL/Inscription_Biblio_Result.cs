@@ -10,14 +10,10 @@
 namespace DAL
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Connection
+    public partial class Inscription_Biblio_Result
     {
-        public int ID_Con { get; set; }
-        public string Login { get; set; }
-        public string Mot_de_passe { get; set; }
-        public string Role { get; set; }
+        public string Nom_biblio { get; set; }
+        public string Nom { get; set; }
     }
-
 }

@@ -1,0 +1,959 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BibliothequeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bibliotheque">
+          <Key>
+            <PropertyRef Name="ID_Biblio" />
+          </Key>
+          <Property Name="ID_Biblio" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code_Biblio" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Nom_biblio" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Delai" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Connection">
+          <Key>
+            <PropertyRef Name="ID_Con" />
+          </Key>
+          <Property Name="ID_Con" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Login" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Mot_de_passe" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Role" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Bibliotheque.dbo.Emprunt' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Emprunt">
+          <Key>
+            <PropertyRef Name="Date_Emprunt" />
+            <PropertyRef Name="Id_Lecteur" />
+            <PropertyRef Name="Id_Exemp" />
+          </Key>
+          <Property Name="Date_Emprunt" Type="datetime" Nullable="false" />
+          <Property Name="Date_Retour" Type="datetime" />
+          <Property Name="Id_Lecteur" Type="int" Nullable="false" />
+          <Property Name="Id_Exemp" Type="int" Nullable="false" />
+          <Property Name="CA" Type="money" />
+        </EntityType>
+        <EntityType Name="Exemplaire">
+          <Key>
+            <PropertyRef Name="ID_Exemp" />
+          </Key>
+          <Property Name="ID_Exemp" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code_Exemp" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Emprunte" Type="bit" Nullable="false" />
+          <Property Name="Date_Achat" Type="datetime" />
+          <Property Name="Id_Biblio" Type="int" Nullable="false" />
+          <Property Name="Id_Livre" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Lecteur">
+          <Key>
+            <PropertyRef Name="ID_Lecteur" />
+          </Key>
+          <Property Name="ID_Lecteur" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code_Lecteur" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Nom" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Adresse" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Id_Biblio" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Livre">
+          <Key>
+            <PropertyRef Name="ID_Livre" />
+          </Key>
+          <Property Name="ID_Livre" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ISBN" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Titre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Image" Type="image" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Bibliotheque.dbo.Reservation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="Date_Reserv" />
+            <PropertyRef Name="Id_Lecteur" />
+            <PropertyRef Name="Id_Livre" />
+          </Key>
+          <Property Name="Date_Reserv" Type="date" Nullable="false" />
+          <Property Name="Id_Lecteur" Type="int" Nullable="false" />
+          <Property Name="Id_Livre" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Tarif">
+          <Key>
+            <PropertyRef Name="ID_Tarif" />
+          </Key>
+          <Property Name="ID_Tarif" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Prix_Inscription" Type="money" Nullable="false" />
+          <Property Name="Prix_Emprunt" Type="money" Nullable="false" />
+          <Property Name="Prix_Retard" Type="money" Nullable="false" />
+          <Property Name="Prix_Academique" Type="money" Nullable="false" />
+          <Property Name="Id_Biblio" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Emprunt_Exemplaire">
+          <End Role="Exemplaire" Type="Self.Exemplaire" Multiplicity="1" />
+          <End Role="Emprunt" Type="Self.Emprunt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exemplaire">
+              <PropertyRef Name="ID_Exemp" />
+            </Principal>
+            <Dependent Role="Emprunt">
+              <PropertyRef Name="Id_Exemp" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Emprunt_Lecteur">
+          <End Role="Lecteur" Type="Self.Lecteur" Multiplicity="1" />
+          <End Role="Emprunt" Type="Self.Emprunt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lecteur">
+              <PropertyRef Name="ID_Lecteur" />
+            </Principal>
+            <Dependent Role="Emprunt">
+              <PropertyRef Name="Id_Lecteur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Exemplaire_Biblio">
+          <End Role="Bibliotheque" Type="Self.Bibliotheque" Multiplicity="1" />
+          <End Role="Exemplaire" Type="Self.Exemplaire" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bibliotheque">
+              <PropertyRef Name="ID_Biblio" />
+            </Principal>
+            <Dependent Role="Exemplaire">
+              <PropertyRef Name="Id_Biblio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Exemplaire_Livre">
+          <End Role="Livre" Type="Self.Livre" Multiplicity="1" />
+          <End Role="Exemplaire" Type="Self.Exemplaire" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Livre">
+              <PropertyRef Name="ID_Livre" />
+            </Principal>
+            <Dependent Role="Exemplaire">
+              <PropertyRef Name="Id_Livre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lecteur_Biblio">
+          <End Role="Bibliotheque" Type="Self.Bibliotheque" Multiplicity="1" />
+          <End Role="Lecteur" Type="Self.Lecteur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bibliotheque">
+              <PropertyRef Name="ID_Biblio" />
+            </Principal>
+            <Dependent Role="Lecteur">
+              <PropertyRef Name="Id_Biblio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservation_Lecteur">
+          <End Role="Lecteur" Type="Self.Lecteur" Multiplicity="1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lecteur">
+              <PropertyRef Name="ID_Lecteur" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="Id_Lecteur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservation_Livre">
+          <End Role="Livre" Type="Self.Livre" Multiplicity="1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Livre">
+              <PropertyRef Name="ID_Livre" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="Id_Livre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tarif_Biblio">
+          <End Role="Bibliotheque" Type="Self.Bibliotheque" Multiplicity="1" />
+          <End Role="Tarif" Type="Self.Tarif" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bibliotheque">
+              <PropertyRef Name="ID_Biblio" />
+            </Principal>
+            <Dependent Role="Tarif">
+              <PropertyRef Name="Id_Biblio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="Creation_Exemplaire" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Code_Exemp" Type="varchar" Mode="In" />
+          <Parameter Name="Emprunte" Type="bit" Mode="In" />
+          <Parameter Name="Id_Biblio" Type="int" Mode="In" />
+          <Parameter Name="Id_Livre" Type="int" Mode="In" />
+        </Function>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="Inscription_Biblio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Jours_Emprunts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Jours_EmpruntsByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="List_Biblio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Liste_Emprunts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Liste_EmpruntsAvecTarifs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Liste_EmpruntsByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Liste_NbreLivresEmpruntéEtDansQuelleBiblio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Liste_Reservations" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Liste_ReservationsbyID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Livres_DisposEtDansQuelleBiblio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Livres_NbreEmpruntéParBiblio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Retour_livre" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdLecteur" Type="int" Mode="In" />
+          <Parameter Name="IdExemp" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="BibliothequeModelStoreContainer">
+          <EntitySet Name="Bibliotheque" EntityType="Self.Bibliotheque" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Connection" EntityType="Self.Connection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Exemplaire" EntityType="Self.Exemplaire" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lecteur" EntityType="Self.Lecteur" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Livre" EntityType="Self.Livre" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tarif" EntityType="Self.Tarif" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Emprunt" EntityType="Self.Emprunt" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Emprunt].[Date_Emprunt] AS [Date_Emprunt], 
+    [Emprunt].[Date_Retour] AS [Date_Retour], 
+    [Emprunt].[Id_Lecteur] AS [Id_Lecteur], 
+    [Emprunt].[Id_Exemp] AS [Id_Exemp], 
+    [Emprunt].[CA] AS [CA]
+    FROM [dbo].[Emprunt] AS [Emprunt]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Reservation" EntityType="Self.Reservation" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Reservation].[Date_Reserv] AS [Date_Reserv], 
+    [Reservation].[Id_Lecteur] AS [Id_Lecteur], 
+    [Reservation].[Id_Livre] AS [Id_Livre]
+    FROM [dbo].[Reservation] AS [Reservation]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Emprunt_Exemplaire" Association="Self.FK_Emprunt_Exemplaire">
+            <End Role="Exemplaire" EntitySet="Exemplaire" />
+            <End Role="Emprunt" EntitySet="Emprunt" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Emprunt_Lecteur" Association="Self.FK_Emprunt_Lecteur">
+            <End Role="Lecteur" EntitySet="Lecteur" />
+            <End Role="Emprunt" EntitySet="Emprunt" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Exemplaire_Biblio" Association="Self.FK_Exemplaire_Biblio">
+            <End Role="Bibliotheque" EntitySet="Bibliotheque" />
+            <End Role="Exemplaire" EntitySet="Exemplaire" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Exemplaire_Livre" Association="Self.FK_Exemplaire_Livre">
+            <End Role="Livre" EntitySet="Livre" />
+            <End Role="Exemplaire" EntitySet="Exemplaire" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lecteur_Biblio" Association="Self.FK_Lecteur_Biblio">
+            <End Role="Bibliotheque" EntitySet="Bibliotheque" />
+            <End Role="Lecteur" EntitySet="Lecteur" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservation_Lecteur" Association="Self.FK_Reservation_Lecteur">
+            <End Role="Lecteur" EntitySet="Lecteur" />
+            <End Role="Reservation" EntitySet="Reservation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservation_Livre" Association="Self.FK_Reservation_Livre">
+            <End Role="Livre" EntitySet="Livre" />
+            <End Role="Reservation" EntitySet="Reservation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tarif_Biblio" Association="Self.FK_Tarif_Biblio">
+            <End Role="Bibliotheque" EntitySet="Bibliotheque" />
+            <End Role="Tarif" EntitySet="Tarif" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BibliothequeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Bibliotheque">
+          <Key>
+            <PropertyRef Name="ID_Biblio" />
+          </Key>
+          <Property Name="ID_Biblio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code_Biblio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nom_biblio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Delai" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Exemplaire" Relationship="Self.FK_Exemplaire_Biblio" FromRole="Bibliotheque" ToRole="Exemplaire" />
+          <NavigationProperty Name="Lecteur" Relationship="Self.FK_Lecteur_Biblio" FromRole="Bibliotheque" ToRole="Lecteur" />
+          <NavigationProperty Name="Tarif" Relationship="Self.FK_Tarif_Biblio" FromRole="Bibliotheque" ToRole="Tarif" />
+        </EntityType>
+        <EntityType Name="Connection">
+          <Key>
+            <PropertyRef Name="ID_Con" />
+          </Key>
+          <Property Name="ID_Con" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Mot_de_passe" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Exemplaire">
+          <Key>
+            <PropertyRef Name="ID_Exemp" />
+          </Key>
+          <Property Name="ID_Exemp" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code_Exemp" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Emprunte" Type="Boolean" Nullable="false" />
+          <Property Name="Date_Achat" Type="DateTime" Precision="3" />
+          <Property Name="Id_Biblio" Type="Int32" Nullable="false" />
+          <Property Name="Id_Livre" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bibliotheque" Relationship="Self.FK_Exemplaire_Biblio" FromRole="Exemplaire" ToRole="Bibliotheque" />
+          <NavigationProperty Name="Emprunt" Relationship="Self.FK_Emprunt_Exemplaire" FromRole="Exemplaire" ToRole="Emprunt" />
+          <NavigationProperty Name="Livre" Relationship="Self.FK_Exemplaire_Livre" FromRole="Exemplaire" ToRole="Livre" />
+        </EntityType>
+        <EntityType Name="Lecteur">
+          <Key>
+            <PropertyRef Name="ID_Lecteur" />
+          </Key>
+          <Property Name="ID_Lecteur" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code_Lecteur" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Adresse" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Id_Biblio" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bibliotheque" Relationship="Self.FK_Lecteur_Biblio" FromRole="Lecteur" ToRole="Bibliotheque" />
+          <NavigationProperty Name="Emprunt" Relationship="Self.FK_Emprunt_Lecteur" FromRole="Lecteur" ToRole="Emprunt" />
+          <NavigationProperty Name="Reservation" Relationship="Self.FK_Reservation_Lecteur" FromRole="Lecteur" ToRole="Reservation" />
+        </EntityType>
+        <EntityType Name="Livre">
+          <Key>
+            <PropertyRef Name="ID_Livre" />
+          </Key>
+          <Property Name="ID_Livre" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ISBN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Titre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Exemplaire" Relationship="Self.FK_Exemplaire_Livre" FromRole="Livre" ToRole="Exemplaire" />
+          <NavigationProperty Name="Reservation" Relationship="Self.FK_Reservation_Livre" FromRole="Livre" ToRole="Reservation" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Tarif">
+          <Key>
+            <PropertyRef Name="ID_Tarif" />
+          </Key>
+          <Property Name="ID_Tarif" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Prix_Inscription" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Prix_Emprunt" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Prix_Retard" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Prix_Academique" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Id_Biblio" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bibliotheque" Relationship="Self.FK_Tarif_Biblio" FromRole="Tarif" ToRole="Bibliotheque" />
+        </EntityType>
+        <EntityType Name="Emprunt">
+          <Key>
+            <PropertyRef Name="Date_Emprunt" />
+            <PropertyRef Name="Id_Lecteur" />
+            <PropertyRef Name="Id_Exemp" />
+          </Key>
+          <Property Name="Date_Emprunt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Date_Retour" Type="DateTime" Precision="3" />
+          <Property Name="Id_Lecteur" Type="Int32" Nullable="false" />
+          <Property Name="Id_Exemp" Type="Int32" Nullable="false" />
+          <Property Name="CA" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="Exemplaire" Relationship="Self.FK_Emprunt_Exemplaire" FromRole="Emprunt" ToRole="Exemplaire" />
+          <NavigationProperty Name="Lecteur" Relationship="Self.FK_Emprunt_Lecteur" FromRole="Emprunt" ToRole="Lecteur" />
+        </EntityType>
+        <EntityType Name="Reservation">
+          <Key>
+            <PropertyRef Name="Date_Reserv" />
+            <PropertyRef Name="Id_Lecteur" />
+            <PropertyRef Name="Id_Livre" />
+          </Key>
+          <Property Name="Date_Reserv" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Id_Lecteur" Type="Int32" Nullable="false" />
+          <Property Name="Id_Livre" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Lecteur" Relationship="Self.FK_Reservation_Lecteur" FromRole="Reservation" ToRole="Lecteur" />
+          <NavigationProperty Name="Livre" Relationship="Self.FK_Reservation_Livre" FromRole="Reservation" ToRole="Livre" />
+        </EntityType>
+        <Association Name="FK_Exemplaire_Biblio">
+          <End Role="Bibliotheque" Type="Self.Bibliotheque" Multiplicity="1" />
+          <End Role="Exemplaire" Type="Self.Exemplaire" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bibliotheque">
+              <PropertyRef Name="ID_Biblio" />
+            </Principal>
+            <Dependent Role="Exemplaire">
+              <PropertyRef Name="Id_Biblio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lecteur_Biblio">
+          <End Role="Bibliotheque" Type="Self.Bibliotheque" Multiplicity="1" />
+          <End Role="Lecteur" Type="Self.Lecteur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bibliotheque">
+              <PropertyRef Name="ID_Biblio" />
+            </Principal>
+            <Dependent Role="Lecteur">
+              <PropertyRef Name="Id_Biblio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tarif_Biblio">
+          <End Role="Bibliotheque" Type="Self.Bibliotheque" Multiplicity="1" />
+          <End Role="Tarif" Type="Self.Tarif" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bibliotheque">
+              <PropertyRef Name="ID_Biblio" />
+            </Principal>
+            <Dependent Role="Tarif">
+              <PropertyRef Name="Id_Biblio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Emprunt_Exemplaire">
+          <End Role="Exemplaire" Type="Self.Exemplaire" Multiplicity="1" />
+          <End Role="Emprunt" Type="Self.Emprunt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exemplaire">
+              <PropertyRef Name="ID_Exemp" />
+            </Principal>
+            <Dependent Role="Emprunt">
+              <PropertyRef Name="Id_Exemp" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Exemplaire_Livre">
+          <End Role="Livre" Type="Self.Livre" Multiplicity="1" />
+          <End Role="Exemplaire" Type="Self.Exemplaire" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Livre">
+              <PropertyRef Name="ID_Livre" />
+            </Principal>
+            <Dependent Role="Exemplaire">
+              <PropertyRef Name="Id_Livre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Emprunt_Lecteur">
+          <End Role="Lecteur" Type="Self.Lecteur" Multiplicity="1" />
+          <End Role="Emprunt" Type="Self.Emprunt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lecteur">
+              <PropertyRef Name="ID_Lecteur" />
+            </Principal>
+            <Dependent Role="Emprunt">
+              <PropertyRef Name="Id_Lecteur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservation_Lecteur">
+          <End Role="Lecteur" Type="Self.Lecteur" Multiplicity="1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lecteur">
+              <PropertyRef Name="ID_Lecteur" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="Id_Lecteur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reservation_Livre">
+          <End Role="Livre" Type="Self.Livre" Multiplicity="1" />
+          <End Role="Reservation" Type="Self.Reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Livre">
+              <PropertyRef Name="ID_Livre" />
+            </Principal>
+            <Dependent Role="Reservation">
+              <PropertyRef Name="Id_Livre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BibliothequeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bibliotheque" EntityType="Self.Bibliotheque" />
+          <EntitySet Name="Connection" EntityType="Self.Connection" />
+          <EntitySet Name="Exemplaire" EntityType="Self.Exemplaire" />
+          <EntitySet Name="Lecteur" EntityType="Self.Lecteur" />
+          <EntitySet Name="Livre" EntityType="Self.Livre" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Tarif" EntityType="Self.Tarif" />
+          <EntitySet Name="Emprunt" EntityType="Self.Emprunt" />
+          <EntitySet Name="Reservation" EntityType="Self.Reservation" />
+          <AssociationSet Name="FK_Exemplaire_Biblio" Association="Self.FK_Exemplaire_Biblio">
+            <End Role="Bibliotheque" EntitySet="Bibliotheque" />
+            <End Role="Exemplaire" EntitySet="Exemplaire" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lecteur_Biblio" Association="Self.FK_Lecteur_Biblio">
+            <End Role="Bibliotheque" EntitySet="Bibliotheque" />
+            <End Role="Lecteur" EntitySet="Lecteur" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tarif_Biblio" Association="Self.FK_Tarif_Biblio">
+            <End Role="Bibliotheque" EntitySet="Bibliotheque" />
+            <End Role="Tarif" EntitySet="Tarif" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Emprunt_Exemplaire" Association="Self.FK_Emprunt_Exemplaire">
+            <End Role="Exemplaire" EntitySet="Exemplaire" />
+            <End Role="Emprunt" EntitySet="Emprunt" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Exemplaire_Livre" Association="Self.FK_Exemplaire_Livre">
+            <End Role="Livre" EntitySet="Livre" />
+            <End Role="Exemplaire" EntitySet="Exemplaire" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Emprunt_Lecteur" Association="Self.FK_Emprunt_Lecteur">
+            <End Role="Lecteur" EntitySet="Lecteur" />
+            <End Role="Emprunt" EntitySet="Emprunt" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservation_Lecteur" Association="Self.FK_Reservation_Lecteur">
+            <End Role="Lecteur" EntitySet="Lecteur" />
+            <End Role="Reservation" EntitySet="Reservation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reservation_Livre" Association="Self.FK_Reservation_Livre">
+            <End Role="Livre" EntitySet="Livre" />
+            <End Role="Reservation" EntitySet="Reservation" />
+          </AssociationSet>
+          <FunctionImport Name="Creation_Exemplaire">
+            <Parameter Name="Code_Exemp" Mode="In" Type="String" />
+            <Parameter Name="Emprunte" Mode="In" Type="Boolean" />
+            <Parameter Name="Id_Biblio" Mode="In" Type="Int32" />
+            <Parameter Name="Id_Livre" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Inscription_Biblio" ReturnType="Collection(BibliothequeModel.Inscription_Biblio_Result)" />
+          <FunctionImport Name="Jours_Emprunts" ReturnType="Collection(BibliothequeModel.Jours_Emprunts_Result)" />
+          <FunctionImport Name="Jours_EmpruntsByID" ReturnType="Collection(BibliothequeModel.Jours_EmpruntsByID_Result)">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="List_Biblio" ReturnType="Collection(String)" />
+          <FunctionImport Name="Liste_Emprunts" ReturnType="Collection(BibliothequeModel.Liste_Emprunts_Result)" />
+          <FunctionImport Name="Liste_EmpruntsAvecTarifs" ReturnType="Collection(BibliothequeModel.Liste_EmpruntsAvecTarifs_Result)" />
+          <FunctionImport Name="Liste_EmpruntsByID" ReturnType="Collection(BibliothequeModel.Liste_EmpruntsByID_Result)">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Liste_NbreLivresEmpruntéEtDansQuelleBiblio" ReturnType="Collection(BibliothequeModel.Liste_NbreLivresEmpruntéEtDansQuelleBiblio_Result)" />
+          <FunctionImport Name="Liste_Reservations" ReturnType="Collection(BibliothequeModel.Liste_Reservations_Result)" />
+          <FunctionImport Name="Liste_ReservationsbyID" ReturnType="Collection(BibliothequeModel.Liste_ReservationsbyID_Result)">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Livres_DisposEtDansQuelleBiblio" ReturnType="Collection(BibliothequeModel.Livres_DisposEtDansQuelleBiblio_Result)" />
+          <FunctionImport Name="Livres_NbreEmpruntéParBiblio" ReturnType="Collection(BibliothequeModel.Livres_NbreEmpruntéParBiblio_Result)" />
+          <FunctionImport Name="Retour_livre">
+            <Parameter Name="IdLecteur" Mode="In" Type="Int32" />
+            <Parameter Name="IdExemp" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(BibliothequeModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(BibliothequeModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+        </EntityContainer>
+        <ComplexType Name="Inscription_Biblio_Result">
+          <Property Type="String" Name="Nom_biblio" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Nom" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Jours_Emprunts_Result">
+          <Property Type="String" Name="Nom" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Nom_biblio" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Column1" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Jours_EmpruntsByID_Result">
+          <Property Type="String" Name="Nom" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Nom_biblio" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Column1" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Liste_Emprunts_Result">
+          <Property Type="String" Name="Nom" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Titre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Code_Exemp" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="Nom_biblio" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Date_Emprunt" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="Date_Retour" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="Liste_EmpruntsAvecTarifs_Result">
+          <Property Type="String" Name="Nom" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Titre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Code_Exemp" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="Nom_biblio" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Date_Emprunt" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="Date_Retour" Nullable="true" Precision="23" />
+          <Property Type="Decimal" Name="Prix_Emprunt" Nullable="false" Precision="19" />
+        </ComplexType>
+        <ComplexType Name="Liste_EmpruntsByID_Result">
+          <Property Type="String" Name="Nom" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Titre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Code_Exemp" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="Nom_biblio" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Date_Emprunt" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="Date_Retour" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="Liste_NbreLivresEmpruntéEtDansQuelleBiblio_Result">
+          <Property Type="String" Name="Nom" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Nom_biblio" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Column1" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Liste_Reservations_Result">
+          <Property Type="String" Name="Nom" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Titre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Nom_biblio" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Date_Reserv" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="Liste_ReservationsbyID_Result">
+          <Property Type="String" Name="Nom" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Titre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Nom_biblio" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Date_Reserv" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="Livres_DisposEtDansQuelleBiblio_Result">
+          <Property Type="String" Name="Titre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Nom_biblio" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Livres_NbreEmpruntéParBiblio_Result">
+          <Property Type="String" Name="Nom_biblio" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Column1" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BibliothequeModelStoreContainer" CdmEntityContainer="BibliothequeEntities">
+          <EntitySetMapping Name="Bibliotheque">
+            <EntityTypeMapping TypeName="BibliothequeModel.Bibliotheque">
+              <MappingFragment StoreEntitySet="Bibliotheque">
+                <ScalarProperty Name="ID_Biblio" ColumnName="ID_Biblio" />
+                <ScalarProperty Name="Code_Biblio" ColumnName="Code_Biblio" />
+                <ScalarProperty Name="Nom_biblio" ColumnName="Nom_biblio" />
+                <ScalarProperty Name="Delai" ColumnName="Delai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Connection">
+            <EntityTypeMapping TypeName="BibliothequeModel.Connection">
+              <MappingFragment StoreEntitySet="Connection">
+                <ScalarProperty Name="ID_Con" ColumnName="ID_Con" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Mot_de_passe" ColumnName="Mot_de_passe" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Exemplaire">
+            <EntityTypeMapping TypeName="BibliothequeModel.Exemplaire">
+              <MappingFragment StoreEntitySet="Exemplaire">
+                <ScalarProperty Name="ID_Exemp" ColumnName="ID_Exemp" />
+                <ScalarProperty Name="Code_Exemp" ColumnName="Code_Exemp" />
+                <ScalarProperty Name="Emprunte" ColumnName="Emprunte" />
+                <ScalarProperty Name="Date_Achat" ColumnName="Date_Achat" />
+                <ScalarProperty Name="Id_Biblio" ColumnName="Id_Biblio" />
+                <ScalarProperty Name="Id_Livre" ColumnName="Id_Livre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lecteur">
+            <EntityTypeMapping TypeName="BibliothequeModel.Lecteur">
+              <MappingFragment StoreEntitySet="Lecteur">
+                <ScalarProperty Name="ID_Lecteur" ColumnName="ID_Lecteur" />
+                <ScalarProperty Name="Code_Lecteur" ColumnName="Code_Lecteur" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Adresse" ColumnName="Adresse" />
+                <ScalarProperty Name="Id_Biblio" ColumnName="Id_Biblio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Livre">
+            <EntityTypeMapping TypeName="BibliothequeModel.Livre">
+              <MappingFragment StoreEntitySet="Livre">
+                <ScalarProperty Name="ID_Livre" ColumnName="ID_Livre" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="Titre" ColumnName="Titre" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="BibliothequeModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tarif">
+            <EntityTypeMapping TypeName="BibliothequeModel.Tarif">
+              <MappingFragment StoreEntitySet="Tarif">
+                <ScalarProperty Name="ID_Tarif" ColumnName="ID_Tarif" />
+                <ScalarProperty Name="Prix_Inscription" ColumnName="Prix_Inscription" />
+                <ScalarProperty Name="Prix_Emprunt" ColumnName="Prix_Emprunt" />
+                <ScalarProperty Name="Prix_Retard" ColumnName="Prix_Retard" />
+                <ScalarProperty Name="Prix_Academique" ColumnName="Prix_Academique" />
+                <ScalarProperty Name="Id_Biblio" ColumnName="Id_Biblio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Emprunt">
+            <EntityTypeMapping TypeName="BibliothequeModel.Emprunt">
+              <MappingFragment StoreEntitySet="Emprunt">
+                <ScalarProperty Name="Date_Emprunt" ColumnName="Date_Emprunt" />
+                <ScalarProperty Name="Date_Retour" ColumnName="Date_Retour" />
+                <ScalarProperty Name="Id_Lecteur" ColumnName="Id_Lecteur" />
+                <ScalarProperty Name="Id_Exemp" ColumnName="Id_Exemp" />
+                <ScalarProperty Name="CA" ColumnName="CA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reservation">
+            <EntityTypeMapping TypeName="BibliothequeModel.Reservation">
+              <MappingFragment StoreEntitySet="Reservation">
+                <ScalarProperty Name="Date_Reserv" ColumnName="Date_Reserv" />
+                <ScalarProperty Name="Id_Lecteur" ColumnName="Id_Lecteur" />
+                <ScalarProperty Name="Id_Livre" ColumnName="Id_Livre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Creation_Exemplaire" FunctionName="BibliothequeModel.Store.Creation_Exemplaire" />
+          <FunctionImportMapping FunctionImportName="Inscription_Biblio" FunctionName="BibliothequeModel.Store.Inscription_Biblio">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BibliothequeModel.Inscription_Biblio_Result">
+                <ScalarProperty Name="Nom_biblio" ColumnName="Nom_biblio" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Jours_Emprunts" FunctionName="BibliothequeModel.Store.Jours_Emprunts">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BibliothequeModel.Jours_Emprunts_Result">
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Nom_biblio" ColumnName="Nom_biblio" />
+                <ScalarProperty Name="Column1" ColumnName="Column1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Jours_EmpruntsByID" FunctionName="BibliothequeModel.Store.Jours_EmpruntsByID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BibliothequeModel.Jours_EmpruntsByID_Result">
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Nom_biblio" ColumnName="Nom_biblio" />
+                <ScalarProperty Name="Column1" ColumnName="Column1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="List_Biblio" FunctionName="BibliothequeModel.Store.List_Biblio" />
+          <FunctionImportMapping FunctionImportName="Liste_Emprunts" FunctionName="BibliothequeModel.Store.Liste_Emprunts">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BibliothequeModel.Liste_Emprunts_Result">
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Titre" ColumnName="Titre" />
+                <ScalarProperty Name="Code_Exemp" ColumnName="Code_Exemp" />
+                <ScalarProperty Name="Nom_biblio" ColumnName="Nom_biblio" />
+                <ScalarProperty Name="Date_Emprunt" ColumnName="Date_Emprunt" />
+                <ScalarProperty Name="Date_Retour" ColumnName="Date_Retour" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Liste_EmpruntsAvecTarifs" FunctionName="BibliothequeModel.Store.Liste_EmpruntsAvecTarifs">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BibliothequeModel.Liste_EmpruntsAvecTarifs_Result">
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Titre" ColumnName="Titre" />
+                <ScalarProperty Name="Code_Exemp" ColumnName="Code_Exemp" />
+                <ScalarProperty Name="Nom_biblio" ColumnName="Nom_biblio" />
+                <ScalarProperty Name="Date_Emprunt" ColumnName="Date_Emprunt" />
+                <ScalarProperty Name="Date_Retour" ColumnName="Date_Retour" />
+                <ScalarProperty Name="Prix_Emprunt" ColumnName="Prix_Emprunt" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Liste_EmpruntsByID" FunctionName="BibliothequeModel.Store.Liste_EmpruntsByID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BibliothequeModel.Liste_EmpruntsByID_Result">
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Titre" ColumnName="Titre" />
+                <ScalarProperty Name="Code_Exemp" ColumnName="Code_Exemp" />
+                <ScalarProperty Name="Nom_biblio" ColumnName="Nom_biblio" />
+                <ScalarProperty Name="Date_Emprunt" ColumnName="Date_Emprunt" />
+                <ScalarProperty Name="Date_Retour" ColumnName="Date_Retour" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Liste_NbreLivresEmpruntéEtDansQuelleBiblio" FunctionName="BibliothequeModel.Store.Liste_NbreLivresEmpruntéEtDansQuelleBiblio">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BibliothequeModel.Liste_NbreLivresEmpruntéEtDansQuelleBiblio_Result">
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Nom_biblio" ColumnName="Nom_biblio" />
+                <ScalarProperty Name="Column1" ColumnName="Column1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Liste_Reservations" FunctionName="BibliothequeModel.Store.Liste_Reservations">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BibliothequeModel.Liste_Reservations_Result">
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Titre" ColumnName="Titre" />
+                <ScalarProperty Name="Nom_biblio" ColumnName="Nom_biblio" />
+                <ScalarProperty Name="Date_Reserv" ColumnName="Date_Reserv" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Liste_ReservationsbyID" FunctionName="BibliothequeModel.Store.Liste_ReservationsbyID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BibliothequeModel.Liste_ReservationsbyID_Result">
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Titre" ColumnName="Titre" />
+                <ScalarProperty Name="Nom_biblio" ColumnName="Nom_biblio" />
+                <ScalarProperty Name="Date_Reserv" ColumnName="Date_Reserv" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Livres_DisposEtDansQuelleBiblio" FunctionName="BibliothequeModel.Store.Livres_DisposEtDansQuelleBiblio">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BibliothequeModel.Livres_DisposEtDansQuelleBiblio_Result">
+                <ScalarProperty Name="Titre" ColumnName="Titre" />
+                <ScalarProperty Name="Nom_biblio" ColumnName="Nom_biblio" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Livres_NbreEmpruntéParBiblio" FunctionName="BibliothequeModel.Store.Livres_NbreEmpruntéParBiblio">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BibliothequeModel.Livres_NbreEmpruntéParBiblio_Result">
+                <ScalarProperty Name="Nom_biblio" ColumnName="Nom_biblio" />
+                <ScalarProperty Name="Column1" ColumnName="Column1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Retour_livre" FunctionName="BibliothequeModel.Store.Retour_livre" />
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="BibliothequeModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="BibliothequeModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="BibliothequeModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="BibliothequeModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BibliothequeModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="BibliothequeModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BibliothequeModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="BibliothequeModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="BibliothequeModel.Store.sp_upgraddiagrams" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

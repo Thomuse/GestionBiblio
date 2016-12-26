@@ -24,6 +24,12 @@ namespace GestionBibliothèque
                 var oDataSet = new DataSet();
                 BL.DataAdmin.ListEmprunts(ref oDataSet);
                 o_dataGridView.DataSource = oDataSet.Tables["Emprunts"].DefaultView;
+                o_dataGridView.Columns["Nom"].ReadOnly = true;
+                o_dataGridView.Columns["Titre"].ReadOnly = true;
+                o_dataGridView.Columns["Code_Exemp"].ReadOnly = true;
+                o_dataGridView.Columns["Nom_Biblio"].ReadOnly = true;
+                o_dataGridView.Columns["Date_Emprunt"].ReadOnly = true;
+                o_dataGridView.Columns["Date_Retour"].ReadOnly = true;
             }
 
             catch (Erreur.BusinessError ex)
@@ -53,6 +59,26 @@ namespace GestionBibliothèque
                 textBox_Id_Livre.Clear();
                 DateTime Date = DateTime.Now;
                DialogResult res = MessageBox.Show("Exemplaire créé avec succcès", "Confirmation" + " " + Date, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void button_Valider_Click(object sender, EventArgs e)
+        //Ne fonctionne pas.. Problème de procédure..
+        {
+            try
+            {
+                int IdExemp = Convert.ToInt32(textBox_ID_Exemplaire.Text);
+                int IdLecteur = Convert.ToInt32(textBox_ID_Lecteur.Text);
+                BL.DataAdmin.RetourExemplaire(IdExemp, IdLecteur);
+                textBox_ID_Exemplaire.Clear();
+                textBox_ID_Lecteur.Clear();
+                DateTime Date = DateTime.Now;
+                DialogResult res = MessageBox.Show("Exemplaire à nouveau disponible", "Confirmation" + " " + Date, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
             catch (Exception ex)

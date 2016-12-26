@@ -30,8 +30,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,12 +51,93 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connection.cs" />
+    <Compile Include="Bibliotheque.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Connection.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
     <Compile Include="Connexion.cs" />
     <Compile Include="DataLecteur.cs" />
     <Compile Include="ConnectionString.cs" />
     <Compile Include="DataAdmin.cs" />
+    <Compile Include="Emprunt.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Exemplaire.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Globals.cs" />
+    <Compile Include="Inscription_Biblio_Result.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Jours_EmpruntsByID_Result.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Jours_Emprunts_Result.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Lecteur.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Liste_EmpruntsAvecTarifs_Result.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Liste_EmpruntsByID_Result.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Liste_Emprunts_Result.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Liste_NbreLivresEmpruntéEtDansQuelleBiblio_Result.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Liste_ReservationsbyID_Result.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Liste_Reservations_Result.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Livre.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Livres_DisposEtDansQuelleBiblio_Result.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Livres_NbreEmpruntéParBiblio_Result.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelUser.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelUser.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelUser.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelUser.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelUser.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reservation.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_helpdiagrams_Result.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagrams.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tarif.cs">
+      <DependentUpon>ModelUser.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Erreur\Erreur.csproj">
@@ -56,6 +148,32 @@
       <Project>{9f41a890-5c25-4fd6-8022-0b4456108fcd}</Project>
       <Name>Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="ModelUser.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelUser.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="ModelUser.edmx.diagram">
+      <DependentUpon>ModelUser.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ModelUser.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelUser.edmx</DependentUpon>
+      <LastGenOutput>ModelUser.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="ModelUser.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelUser.edmx</DependentUpon>
+      <LastGenOutput>ModelUser.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

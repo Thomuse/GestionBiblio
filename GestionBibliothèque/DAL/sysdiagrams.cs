@@ -12,12 +12,12 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class Connection
+    public partial class sysdiagrams
     {
-        public int ID_Con { get; set; }
-        public string Login { get; set; }
-        public string Mot_de_passe { get; set; }
-        public string Role { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
-
 }

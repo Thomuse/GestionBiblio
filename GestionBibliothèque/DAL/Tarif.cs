@@ -12,12 +12,15 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class Connection
+    public partial class Tarif
     {
-        public int ID_Con { get; set; }
-        public string Login { get; set; }
-        public string Mot_de_passe { get; set; }
-        public string Role { get; set; }
+        public int ID_Tarif { get; set; }
+        public decimal Prix_Inscription { get; set; }
+        public decimal Prix_Emprunt { get; set; }
+        public decimal Prix_Retard { get; set; }
+        public decimal Prix_Academique { get; set; }
+        public int Id_Biblio { get; set; }
+    
+        public virtual Bibliotheque Bibliotheque { get; set; }
     }
-
 }

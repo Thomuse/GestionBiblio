@@ -12,12 +12,13 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class Connection
+    public partial class Reservation
     {
-        public int ID_Con { get; set; }
-        public string Login { get; set; }
-        public string Mot_de_passe { get; set; }
-        public string Role { get; set; }
+        public System.DateTime Date_Reserv { get; set; }
+        public int Id_Lecteur { get; set; }
+        public int Id_Livre { get; set; }
+    
+        public virtual Lecteur Lecteur { get; set; }
+        public virtual Livre Livre { get; set; }
     }
-
 }

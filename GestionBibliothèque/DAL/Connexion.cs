@@ -10,13 +10,12 @@ namespace DAL
 {
     public static class Connexion
     {
-        public static void ChoixBiblio(List<Model.BiblioModel>lstBiblio)
+        public static DataSet ChoixBiblio()
         {
            
             SqlCommand oCommand = new SqlCommand();
-            
-
-            List<Model.BiblioModel> listeBiblio = new List<Model.BiblioModel>();
+            var oData = new DataSet();
+            var oSqlAdapter = new SqlDataAdapter();
 
             try
             {
@@ -24,17 +23,27 @@ namespace DAL
                 oCommand.Connection = ConnectionString.oDatabase;
                 oCommand.CommandType = CommandType.StoredProcedure;
                 oCommand.CommandText = "List_Biblio";
-                SqlDataReader oData = oCommand.ExecuteReader();
-
-                while (oData.Read())
-                {
-                    string Nom_Biblio = oData.ToString();
-
-                }
+                oSqlAdapter.SelectCommand = oCommand;
+                oSqlAdapter.Fill(oData, "ListeBiblio");
 
             }
-            catch (Exception ex)
+            catch (SqlException SqlNumber)
             {
+                int IdError = 999;
+                string sMessage;
+                switch (SqlNumber.Number)
+                {
+                    case 201:
+                        IdError = 1;
+                        break;
+                    case 2627:
+                        IdError = 2;
+                        break;
+                    default:
+                        sMessage = SqlNumber.Message + " -- " + SqlNumber.Number;
+                        break;
+                }
+            
               
             }
             finally
@@ -43,7 +52,8 @@ namespace DAL
 
                     ConnectionString.oDatabase.Close();
             }
-        }
+            return oData;
+        }// ne fonctionne pas
 
 
 

@@ -111,5 +111,55 @@ namespace DAL
             }
 
         }
+        public static void RetourLivre(ref int p_IdExemp,ref int p_IdLecteur)
+        {
+            //Ne fonctionne pas.. Problème de procédure..
+            SqlCommand oCommand = new SqlCommand();
+
+            try
+            {
+                ConnectionString.oDatabase.Open();
+                oCommand.Connection = ConnectionString.oDatabase;
+                oCommand.CommandType = CommandType.StoredProcedure;
+                oCommand.CommandText = "Retour_Livre";
+
+                SqlParameter oParamIdExemp = new SqlParameter("@IdExemp", p_IdExemp);
+                SqlParameter oParamIdLecteur = new SqlParameter("@IdLecteur", p_IdLecteur);
+                //SqlParameter oParamEmprunte = new SqlParameter("@Emprunte", p_Emprunte);
+
+                if (p_IdExemp != 0 && p_IdLecteur != 0)
+                {
+                    oCommand.Parameters.Add(oParamIdExemp);
+                    oCommand.Parameters.Add(oParamIdLecteur);
+                   // oCommand.Parameters.Add(oParamEmprunte);
+                }
+                int RowsModified = oCommand.ExecuteNonQuery();
+            }
+            catch (SqlException SqlNumber)
+            {
+                int IdError = 999;
+                string sMessage;
+                switch (SqlNumber.Number)
+                {
+                    case 201:
+                        IdError = 1;
+                        break;
+                    case 2627:
+                        IdError = 2;
+                        break;
+                    default:
+                        sMessage = SqlNumber.Message + " -- " + SqlNumber.Number;
+                        break;
+                }
+
+            }
+            finally
+            {
+                if (ConnectionString.oDatabase.State == ConnectionState.Open)
+                {
+                    ConnectionString.oDatabase.Close();
+                }
+            }
+        }
     }
 }

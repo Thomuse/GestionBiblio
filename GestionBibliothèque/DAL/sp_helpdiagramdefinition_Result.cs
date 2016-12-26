@@ -10,14 +10,10 @@
 namespace DAL
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Connection
+    public partial class sp_helpdiagramdefinition_Result
     {
-        public int ID_Con { get; set; }
-        public string Login { get; set; }
-        public string Mot_de_passe { get; set; }
-        public string Role { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
-
 }

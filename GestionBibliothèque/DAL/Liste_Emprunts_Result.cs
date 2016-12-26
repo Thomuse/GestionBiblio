@@ -10,14 +10,14 @@
 namespace DAL
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Connection
+    public partial class Liste_Emprunts_Result
     {
-        public int ID_Con { get; set; }
-        public string Login { get; set; }
-        public string Mot_de_passe { get; set; }
-        public string Role { get; set; }
+        public string Nom { get; set; }
+        public string Titre { get; set; }
+        public string Code_Exemp { get; set; }
+        public string Nom_biblio { get; set; }
+        public System.DateTime Date_Emprunt { get; set; }
+        public Nullable<System.DateTime> Date_Retour { get; set; }
     }
-
 }

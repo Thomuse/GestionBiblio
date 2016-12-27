@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL;
 
 namespace BL
 {
@@ -43,14 +44,31 @@ namespace BL
         }
         public static void RetourExemplaire(int p_IdExemp, int p_IdLecteur)
         {
-            //Ne fonctionne pas.. Problème de procédure..
             try
             {
                 int IdExemp = 0;
                 int IdLecteur = 0;
                 IdExemp = p_IdExemp;
                 IdLecteur = p_IdLecteur;
-                DAL.DataAdmin.RetourLivre(ref IdExemp, ref IdLecteur);
+                DAL.DataAdmin.RetourLivre(IdExemp, IdLecteur);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        public static void ChercherLivre(ref string p_NomLivre,ref DataSet oData)
+        {
+            try
+            {
+                var oDataSet = new DataSet();
+
+                string NomLivre = "";
+                NomLivre = p_NomLivre;
+                oDataSet = DAL.DataAdmin.RechercherLivre(NomLivre);
+                oData = oDataSet;
+
+
             }
             catch (Exception e)
             {

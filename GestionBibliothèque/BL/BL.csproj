@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Connexion.cs" />
     <Compile Include="DataAdmin.cs" />
+    <Compile Include="DataLecteur.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

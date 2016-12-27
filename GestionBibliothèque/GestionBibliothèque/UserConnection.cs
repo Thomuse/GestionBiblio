@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -25,18 +26,27 @@ namespace GestionBibliothèque
 
         private void button_ListeEmprunts_By_ID_Click(object sender, EventArgs e)
         {
-            try
-            {
-                var oDataSet = new DataSet();
-                int ID = Convert.ToInt32(textBox_Id_Lecteur.Text);
-                BL.DataLecteur.ListeEmprunts(ref oDataSet, ref ID);
-                textBox_Id_Lecteur.Clear();
-                o_DatagridView.DataSource = oDataSet.Tables[0].DefaultView;
-            }
-            catch (Erreur.BusinessError ex)
-            {
-                MessageBox.Show(ex.Message);
+             BibliothequeEntities1 oDb = new BibliothequeEntities1();
+            List<Liste_EmpruntsByID_Result> ListEmprunts =oDb.Liste_EmpruntsByID(Convert.ToInt32(textBox_Id_Lecteur.Text)).ToList();
+                
+                    o_DatagridView.DataSource = ListEmprunts.ToList();
+                    }
+
+        private void button_emprunter_Click(object sender, EventArgs e)
+        {
+            BibliothequeEntities1 oDb = new BibliothequeEntities1();
+            oDb.EmpruntLivre(Convert.ToInt32(textBox_ID_Lecteur_Pret.Text),Convert.ToInt32(textBox_ID_Exemplaire.Text));
+        }
+
+        private void button_Reserver_Click(object sender, EventArgs e)
+        {
+            BibliothequeEntities1 oDb = new BibliothequeEntities1();
+            oDb.ReserverLivre(Convert.ToInt32(textBox_ID_Lecteur_Reservation.Text), Convert.ToInt32(textBox_ID_Livre_Reservation.Text));
+        }
+
+
+      
             }
         }
-    }
-}
+    
+

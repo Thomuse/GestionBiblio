@@ -23,7 +23,7 @@ namespace DAL
                 ConnectionString.oDatabase.Open();
                 oCommand.Connection = ConnectionString.oDatabase;
                 oCommand.CommandType = CommandType.StoredProcedure;
-                oCommand.CommandText = "Liste_Emprunts";
+                oCommand.CommandText = "Liste_EmpruntsAvecTarifs";
                 oSqlAdapter.SelectCommand = oCommand;
                 oSqlAdapter.Fill(oDataSet, "Emprunts");
                 return oDataSet;
@@ -111,9 +111,8 @@ namespace DAL
             }
 
         }
-        public static void RetourLivre(ref int p_IdExemp,ref int p_IdLecteur)
+        public static void RetourLivre(int p_IdExemp, int p_IdLecteur)
         {
-            //Ne fonctionne pas.. Problème de procédure..
             SqlCommand oCommand = new SqlCommand();
 
             try
@@ -123,15 +122,15 @@ namespace DAL
                 oCommand.CommandType = CommandType.StoredProcedure;
                 oCommand.CommandText = "Retour_Livre";
 
-                SqlParameter oParamIdExemp = new SqlParameter("@IdExemp", p_IdExemp);
+                SqlParameter oParamIdExemp = new SqlParameter("@IdExem", p_IdExemp);
                 SqlParameter oParamIdLecteur = new SqlParameter("@IdLecteur", p_IdLecteur);
-                //SqlParameter oParamEmprunte = new SqlParameter("@Emprunte", p_Emprunte);
+             
 
                 if (p_IdExemp != 0 && p_IdLecteur != 0)
                 {
                     oCommand.Parameters.Add(oParamIdExemp);
                     oCommand.Parameters.Add(oParamIdLecteur);
-                   // oCommand.Parameters.Add(oParamEmprunte);
+              
                 }
                 int RowsModified = oCommand.ExecuteNonQuery();
             }
@@ -160,6 +159,58 @@ namespace DAL
                     ConnectionString.oDatabase.Close();
                 }
             }
+        }
+        public static DataSet RechercherLivre(string p_NomLivre)
+        {
+            var oDataSet = new DataSet();
+
+            var oCommand = new SqlCommand();
+
+            var oSqlAdapter = new SqlDataAdapter();
+
+            try
+            {
+                ConnectionString.oDatabase.Open();
+                oCommand.Connection = ConnectionString.oDatabase;
+                oCommand.CommandType = CommandType.StoredProcedure;
+                oCommand.CommandText = "ChercherLivre";
+                SqlParameter oParamNomLivre = new SqlParameter("@NomLivre", p_NomLivre);
+                if (p_NomLivre != "")
+                {
+                    oCommand.Parameters.Add(oParamNomLivre);
+                }
+                oSqlAdapter.SelectCommand = oCommand;
+                oSqlAdapter.Fill(oDataSet, "ListeLivre");
+                int RowsModified = oCommand.ExecuteNonQuery();
+
+            }
+
+            catch (SqlException exSQL)
+            {
+                int IdError = 999;
+                switch (exSQL.Number)
+                {
+                    case 4060:
+                        IdError = 3;
+                        break;
+                    case 18456:
+                        IdError = 4;
+                        break;
+                }
+            }
+
+            finally
+            {
+                if (ConnectionString.oDatabase.State == ConnectionState.Open)
+                {
+                    ConnectionString.oDatabase.Close();
+                }
+
+
+
+
+            }
+            return oDataSet;
         }
     }
 }

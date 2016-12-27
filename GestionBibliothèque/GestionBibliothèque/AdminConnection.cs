@@ -36,10 +36,10 @@ namespace GestionBibliothèque
             {
                 MessageBox.Show(ex.Message);
             }
-                
-            
+
+
         }
-        
+
         private void o_dataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -53,12 +53,12 @@ namespace GestionBibliothèque
                 int Emprunte = 0;
                 int Id_Biblio = Convert.ToInt32(textBox_Id_Biblio.Text);
                 int Id_Livre = Convert.ToInt32(textBox_Id_Livre.Text);
-                BL.DataAdmin.AjoutExemplaire(Code_Exemplaire,Emprunte, Id_Biblio, Id_Livre);
+                BL.DataAdmin.AjoutExemplaire(Code_Exemplaire, Emprunte, Id_Biblio, Id_Livre);
                 textBox_Code_Exemplaire.Clear();
                 textBox_Id_Biblio.Clear();
                 textBox_Id_Livre.Clear();
                 DateTime Date = DateTime.Now;
-               DialogResult res = MessageBox.Show("Exemplaire créé avec succcès", "Confirmation" + " " + Date, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DialogResult res = MessageBox.Show("Exemplaire créé avec succcès", "Confirmation" + " " + Date, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
             catch (Exception ex)
@@ -68,7 +68,6 @@ namespace GestionBibliothèque
         }
 
         private void button_Valider_Click(object sender, EventArgs e)
-        //Ne fonctionne pas.. Problème de procédure..
         {
             try
             {
@@ -82,6 +81,32 @@ namespace GestionBibliothèque
 
             }
             catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void textBox_Search_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button_Search_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                var oDataSet = new DataSet();
+                string NomLivre = textBox_Search.Text;
+                BL.DataAdmin.ChercherLivre(ref NomLivre,ref oDataSet);
+                o_dataGridView.DataSource = oDataSet.Tables["ListeLivre"].DefaultView;
+                o_dataGridView.Columns["Titre"].ReadOnly = true;
+                o_dataGridView.Columns["ID_Livre"].ReadOnly = true;
+                o_dataGridView.Columns["Emprunte"].ReadOnly = true;
+                o_dataGridView.Columns["Nom_Biblio"].ReadOnly = true;
+                }
+
+            catch (Erreur.BusinessError ex)
             {
                 MessageBox.Show(ex.Message);
             }

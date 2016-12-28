@@ -37,6 +37,7 @@
             this.button_TestAdmin = new System.Windows.Forms.Button();
             this.button_Test_User = new System.Windows.Forms.Button();
             this.button_Charger_Nom_Biblio = new System.Windows.Forms.Button();
+            this.button_Connect = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label_Login
@@ -79,6 +80,7 @@
             this.textBox_Password.Name = "textBox_Password";
             this.textBox_Password.Size = new System.Drawing.Size(100, 20);
             this.textBox_Password.TabIndex = 4;
+            this.textBox_Password.UseSystemPasswordChar = true;
             // 
             // comboBox_Biblio
             // 
@@ -117,13 +119,23 @@
             this.button_Charger_Nom_Biblio.TabIndex = 8;
             this.button_Charger_Nom_Biblio.Text = "Charger Nom Biblio";
             this.button_Charger_Nom_Biblio.UseVisualStyleBackColor = true;
-            this.button_Charger_Nom_Biblio.Click += new System.EventHandler(this.button_Charger_Nom_Biblio_Click);
+            // 
+            // button_Connect
+            // 
+            this.button_Connect.Location = new System.Drawing.Point(309, 206);
+            this.button_Connect.Name = "button_Connect";
+            this.button_Connect.Size = new System.Drawing.Size(75, 41);
+            this.button_Connect.TabIndex = 9;
+            this.button_Connect.Text = "Se Connecter";
+            this.button_Connect.UseVisualStyleBackColor = true;
+            this.button_Connect.Click += new System.EventHandler(this.button_Connect_Click);
             // 
             // Connexion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(660, 393);
+            this.Controls.Add(this.button_Connect);
             this.Controls.Add(this.button_Charger_Nom_Biblio);
             this.Controls.Add(this.button_Test_User);
             this.Controls.Add(this.button_TestAdmin);
@@ -151,5 +163,6 @@
         private System.Windows.Forms.Button button_TestAdmin;
         private System.Windows.Forms.Button button_Test_User;
         private System.Windows.Forms.Button button_Charger_Nom_Biblio;
+        private System.Windows.Forms.Button button_Connect;
     }
 }

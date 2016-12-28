@@ -15,6 +15,10 @@ namespace GestionBibliothèque
         public AdminConnection()
         {
             InitializeComponent();
+
+
+            
+           
         }
 
         private void button_Liste_Emprunts_Click(object sender, EventArgs e)
@@ -80,9 +84,9 @@ namespace GestionBibliothèque
                 DialogResult res = MessageBox.Show("Exemplaire à nouveau disponible", "Confirmation" + " " + Date, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
-            catch (Exception ex)
+            catch (Erreur.BusinessError ex)
             {
-                MessageBox.Show(ex.Message);
+             DialogResult res = MessageBox.Show(ex.Message,"Confirmer",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
             }
         }
 
@@ -97,6 +101,7 @@ namespace GestionBibliothèque
             {
 
                 var oDataSet = new DataSet();
+                
                 string NomLivre = textBox_Search.Text;
                 BL.DataAdmin.ChercherLivre(ref NomLivre,ref oDataSet);
                 o_dataGridView.DataSource = oDataSet.Tables["ListeLivre"].DefaultView;

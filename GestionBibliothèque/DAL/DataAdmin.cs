@@ -34,13 +34,20 @@ namespace DAL
                 int IdError = 999;
                 switch (exSQL.Number)
                 {
-                    case 4060:
-                        IdError = 3;
-                        break;
                     case 18456:
-                        IdError = 4;
+                        IdError = 1;
                         break;
-                }
+                    case 4060:
+                        IdError = 2;
+                        break;
+                    }
+                throw new Erreur.BusinessError(IdError);
+            }
+            catch (Exception ex)
+            {
+                int IdError = 999;
+
+                throw new Erreur.BusinessError(IdError);
             }
 
             finally
@@ -54,7 +61,7 @@ namespace DAL
 
 
             }
-            return oDataSet;
+           
         }
         public static void CreationExemplaire(ref string p_CodeExemplaire,ref int p_Emprunte,ref int p_Id_Biblio, ref int p_Id_Livre)
         {
@@ -133,6 +140,11 @@ namespace DAL
               
                 }
                 int RowsModified = oCommand.ExecuteNonQuery();
+
+                if (RowsModified == 0)
+                {
+                    throw new Erreur.BusinessError(3);
+                }
             }
             catch (SqlException SqlNumber)
             {

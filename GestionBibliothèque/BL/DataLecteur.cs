@@ -11,20 +11,7 @@ namespace BL
     {
         public static void ListeEmprunts(ref int p_ID)
         {
-            //    try
-            //    {
-            //        int Id = 0;
-            //        List<>
-            //        Id = p_ID;
-
-
-
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        throw e;
-            //    }
-            //}
+           
         }
     }
 }

@@ -10,41 +10,49 @@ namespace DAL
 {
     public static class Connexion
     {
-        public static DataSet ChoixBiblio()
+        public static void ChoixBiblio()
         {
-           
-            SqlCommand oCommand = new SqlCommand();
-            var oData = new DataSet();
-            var oSqlAdapter = new SqlDataAdapter();
+            string NomBiblio = "";
+            SqlCommand oSelect = new SqlCommand();
+
 
             try
             {
                 ConnectionString.oDatabase.Open();
-                oCommand.Connection = ConnectionString.oDatabase;
-                oCommand.CommandType = CommandType.StoredProcedure;
-                oCommand.CommandText = "List_Biblio";
-                oSqlAdapter.SelectCommand = oCommand;
-                oSqlAdapter.Fill(oData, "ListeBiblio");
+
+                oSelect.Connection = ConnectionString.oDatabase;
+                oSelect.CommandType = CommandType.StoredProcedure;
+                oSelect.CommandText = "List_Biblio";
+                SqlDataReader oData = oSelect.ExecuteReader();
+
+                while (oData.Read())
+                {
+                    // ReadSingleRow((IDataRecord)oData);
+                    NomBiblio = oData.GetString(0);
+                    //comboBox_Biblio.Items.Add(NomBiblio);
+                   
+                }
 
             }
-            catch (SqlException SqlNumber)
+            catch (SqlException exSQL)
             {
-                int IdError = 999;
-                string sMessage;
-                switch (SqlNumber.Number)
+                string sMessage = "";
+                switch (exSQL.Number)
                 {
-                    case 201:
-                        IdError = 1;
+                    case 18456:
+                        sMessage = "Mauvais user";
                         break;
-                    case 2627:
-                        IdError = 2;
+                    case 4060:
+                        sMessage = "Mauvaise DB";
                         break;
                     default:
-                        sMessage = SqlNumber.Message + " -- " + SqlNumber.Number;
+                        sMessage = exSQL.Message + " -- " + exSQL.Number;
                         break;
                 }
-            
-              
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
             finally
             {
@@ -52,11 +60,12 @@ namespace DAL
 
                     ConnectionString.oDatabase.Close();
             }
-            return oData;
-        }// ne fonctionne pas
+
+            
 
 
 
         }
     }
+}
 
